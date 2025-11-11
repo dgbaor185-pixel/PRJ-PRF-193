@@ -1,0 +1,16 @@
+Data 12 phòng
+1 Room Data Management
+1.1 Add them phòng : 104 Done -> 104 Xuống cuối nên phải xếp lại list.
+1.2 Display Room: hiện ra list phòng.
+1.3 Edit room information: In ra màn hình số phòng muốn edit (Loại phòng - Giá phòng)
+1.4 Delete Room: xóa phòng là xóa hết cả hang.
+2. Booking Managenment
+2.1 Book a room: Chọn số phòng muốn book -> Nếu phòng duoc book thì in book false -> không thì cho book: chuyển trạng thái sang true, cho nhập tên người book
+2.2 Cancel booking: Chon số phòng muốn cancel -> Nếu phòng do khong co nguoi book thi in info phong trong -> không thì chuyển trạng thái sang false, xóa tên người book
+2.3 View current booking: Hiển thị ra các phòng dang duoc book.
+3. Statistics and Reports
+3.1 Occupancy rate: Hiển thị tỉ lệ phòng duoc dat
+3.2 Room usage chart: Nó in ra so phong va trang thai
+4. File handling
+4.1 Save data to file: đã lưu danh sách phòng vào file
+4.2 Load data from file: đã tải danh sách phòng từ file

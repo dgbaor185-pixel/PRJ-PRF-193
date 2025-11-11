@@ -12,8 +12,8 @@ private:
     int roomNumber;
     string roomType;
     string price;
-    int isBooked;
-    string tenantName;
+    bool isBooked;
+    string Name;
 
 public:
     Room()
@@ -21,28 +21,39 @@ public:
         roomNumber = 0;
         roomType = "";
         price = "";
-        isBooked = 0;
-        tenantName = "";
+        isBooked = false;
+        Name = "";
     }
-    Room(int roomNumber, string roomType, double price, bool status, string tenantName, int peopleCount)
-        : roomNumber(roomNumber), roomType(roomType), price(price), isBooked(status), tenantName(tenantName) {}
+    Room(int roomNumber, string roomType, string price, bool isBooked, string Name)
+        : roomNumber(roomNumber), roomType(roomType), price(price), isBooked(isBooked), Name(Name) {}
     int getRoomNumber() { return roomNumber; }
-    int getBookedStatus() { return isBooked; }
+    bool getBookedStatus() { return isBooked; }
     string getPrice() { return price; }
+    string getName() { return Name; }
 
-    void bookRoom(string tenant)
+    void setRoomNumber(int num) { roomNumber = num; }
+    void setRoomType(string type) { roomType = type; }
+    void setPrice(string p) { price = p; }
+
+    void bookRoom(string newName)
     {
-        isBooked = 1;
-        tenantName = tenant;
+        isBooked = true;
+        Name = newName;
+    }
+
+    void cancelBooking()
+    {
+        isBooked = false;
+        Name = "";
     }
 
     void printInfo()
     {
-        cout << setw(12)<< roomNumber
-             << setw(15) << roomType
-             << setw(15) << price
-             << setw(12) << (isBooked ? "Booked" : "Available")
-             << setw(18) << (isBooked ? tenantName : "-")
+        cout << setw(8) << roomNumber
+             << setw(12) << roomType
+             << setw(10) << price
+             << setw(10) << (isBooked ? "Booked" : "Available")
+             << setw(12) << (isBooked ? Name : "-")
              << endl;
     }
 };

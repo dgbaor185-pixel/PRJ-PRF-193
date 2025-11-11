@@ -7,102 +7,118 @@
 #include "Room.h"
 using namespace std;
 
-class RoomManager
+class RoomManagement
 {
 private:
-    vector<Room> rooms;
+    int roomCount = 12;
+    Room rooms[12];
+
+    string getRoomType(int num)
+    {
+        int lastDigit = num % 10;
+        if (lastDigit == 1)
+            return "Normal";
+        if (lastDigit == 2)
+            return "VIP";
+        if (lastDigit == 3)
+            return "Luxury";
+    }
 
 public:
-    void addRoom()
+    RoomManagement() : roomCount(12)
     {
-        int number;
-        string type;
-        string price;
+        int roomNums[12] = {101, 102, 103, 201, 202, 203, 301, 302, 303, 401, 402, 403};
+        for (int i = 0; i < 12; i++)
+        {
+            string type = getRoomType(roomNums[i]);
+            string price = (type == "Normal") ? "100$" : (type == "VIP") ? "500$"
+                                                                         : "1000$";
+            rooms[i] = Room(roomNums[i], type, price, false, "");
+        }
+    }
 
+    void addRoom(int num)
+    {
         cout << "Enter room number: ";
-        cin >> number;
+        cin >> num;
         cin.ignore();
-        cout << "Enter room type: ";
+        string type;
+        cout << "Enter room type (Normal/VIP/Luxury): ";
         getline(cin, type);
-        cout << "Enter price: ";
-        cin >> price;
-
-        rooms.push_back(Room(number, type, price));
-        cout << "Room adđe sucessfully!\n";
-        
+        string price = (type == "Normal") ? "100$" : (type == "VIP") ? "500$"
+                                                                     : "1000$";
+        rooms[roomCount++] = Room(num, type, price, false, "");
+        sortRooms();
+        cout << "Room added successfully!\n";
     }
-     
-    void sort()
+
+    void sortRooms()
     {
-        int i, j, size = students.size();
-        for (i = 0; i < size - 1; i++)
-            for (j = i + 1; j < size; j++)
-                if (students.at(i).getGpa() < students.at(j).getGpa())
+        for (int i = 0; i < roomCount - 1; i++)
+        {
+            for (int j = i + 1; j < roomCount; j++)
+            {
+                if (rooms[i].getRoomNumber() > rooms[j].getRoomNumber())
                 {
-                    Student s = students.at(i);
-                    students.at(i) = students.at(j);
-                    students.at(j) = s;
+                    Room temp = rooms[i];
+                    rooms[i] = rooms[j];
+                    rooms[j] = temp;
                 }
-    }
-    void displayAll()
-    {
-        if (students.empty())
-        {
-            cout << "\nDanh sach trong!\n";
-            return;
-        }
-
-        printf("\n===== DANH SACH SINH VIEN =====\n\n");
-
-        // In tiêu đề
-        printf("-----------------------------------------------------------\n");
-        printf("|%-12s |%-25s| %6s| %8s|\n", "ID", "Name", "Age", "GPA");
-        printf("-----------------------------------------------------------\n");
-        for (auto &s : students)
-        {
-            s.display();
+            }
         }
     }
 
-    // Save as normal text (no CSV)
-    void saveToFile(string filename)
+    void displayAllRooms()
     {
-        ofstream out(filename);
-        for (auto &s : students)
-        {
-            out << s.getId() << endl;
-            out << s.getName() << endl;
-            out << s.getAge() << endl;
-            out << s.getGpa() << endl;
-            out << "---" << endl; // separator
-        }
-        out.close();
+        cout << "================= ROOM LIST ================\n";
+        printHeader();
+        for (int i = 0; i < roomCount; i++)
+            rooms[i].printInfo();
     }
 
-    // Load back
-    void loadFromFile(string filename)
+    void printHeader()
     {
-        students.clear();
-        ifstream in(filename);
-        string id, name, line;
-        int age;
-        double gpa;
+        cout << left << setw(8) << "RoomNumber"
+             << setw(12) << "Type"
+             << setw(10) << "Price"
+             << setw(10) << "Status"
+             << setw(12) << "Name" << endl;
+        cout << "-----------------------------------------------------\n";
+    }
 
-        while (true)
+    void editRoom(int num, string newType, string newPrice)
+    {
+        for (int i = 0; i < roomCount; i++)
         {
-            if (!getline(in, id))
-                break;
-            if (!getline(in, name))
-                break;
-            if (!(in >> age))
-                break;
-            if (!(in >> gpa))
-                break;
-            getline(in, line); // consume endline
-            getline(in, line); // read separator line "---"
-            students.push_back(Student(id, name, age, gpa));
+            if (rooms[i].getRoomNumber() == num)
+            {
+                rooms[i].setRoomType(newType);
+                rooms[i].setPrice(newPrice);
+                cout << "Room " << num << " updated.\n";
+                return;
+            }
         }
-        in.close();
+        cout << "Room not found.\n";
+    }
+
+    void deleteRoom(int num)
+    {
+        bool found = false;
+        for (int i = 0; i < roomCount; i++)
+        {
+            if (rooms[i].getRoomNumber() == num)
+            {
+                for (int j = i; j < roomCount - 1; j++)
+                    rooms[j] = rooms[j + 1];
+                roomCount--;
+                i--;
+                found = true;
+            }
+        }
+        if (found)
+            cout << "Room" << num << " deleted.\n";
+        else
+            cout << "No rooms found to delete.\n";
     }
 };
 
