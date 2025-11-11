@@ -31,8 +31,7 @@ public:
         for (int i = 0; i < 12; i++)
         {
             string type = getRoomType(roomNums[i]);
-            string price = (type == "Normal") ? "100$" : (type == "VIP") ? "500$"
-                                                                         : "1000$";
+            string price = (type == "Normal") ? "100$" : (type == "VIP") ? "500$" : "1000$";
             rooms[i] = Room(roomNums[i], type, price, false, "");
         }
     }
